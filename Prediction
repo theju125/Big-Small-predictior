@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIG SMALL PREDICTOR · PRO</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0d1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+            padding: 1.2rem;
+        }
+
+        .predictor-card {
+            max-width: 580px;
+            width: 100%;
+            background: #11162b;
+            border-radius: 48px;
+            padding: 2rem 1.8rem 2.2rem;
+            box-shadow: 0 30px 60px -12px #000000cc, inset 0 1px 0 rgba(255,255,255,0.03);
+            border: 1px solid #293456;
+            backdrop-filter: blur(4px);
+        }
+
+        /* header */
+        .predictor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid #1e2942;
+        }
+
+        .predictor-header h2 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            color: #bcccf5;
+        }
+
+        .predictor-header h2 i {
+            color: #5f7cff;
+            margin-right: 10px;
+        }
+
+        .live-badge {
+            background: #1a2340;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #8aa3f0;
+            border: 1px solid #31416a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #33ff77;
+            border-radius: 50%;
+            box-shadow: 0 0 14px #33ff77aa;
+            animation: pulse-dot 1.6s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        /* period + result */
+        .period-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0c1122;
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem 0.4rem 1.8rem;
+            border: 1px solid #293456;
+            margin-bottom: 1.8rem;
+        }
+
+        .period-label {
+            color: #8ba0d6;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        .period-number {
+            background: #19233f;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* main result display */
+        .result-hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.8rem 0 1.8rem;
+        }
+
+        .result-box {
+            background: #0b1022;
+            padding: 1rem 2.5rem;
+            border-radius: 80px;
+            border: 1px solid #2f3d64;
+            box-shadow: 0 8px 28px #00000066, inset 0 1px 0 rgba(255,255,255,0.02);
+            min-width: 200px;
+            text-align: center;
+            transition: 0.15s;
+        }
+
+        .result-text {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #eaf0ff, #b7cbff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: 0.2s;
+        }
+
+        .result-text.big {
+            background: linear-gradient(135deg, #ffb3b3, #ff6b6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .result-text.small {
+            background: linear-gradient(135deg, #8cffb0, #33d67a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* predictor controls */
+        .predictor-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .predictor-actions button {
+            flex: 1;
+            padding: 0.7rem 0.5rem;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: #19233f;
+            color: #b7cbff;
+            border: 1px solid #2f3d64;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .predictor-actions button i {
+            color: #6c8cff;
+        }
+
+        .predictor-actions button:hover {
+            background: #26355a;
+            transform: scale(0.97);
+            border-color: #5f7cff;
+        }
+
+        .predictor-actions button:active {
+            transform: scale(0.94);
+        }
+
+        .predictor-actions .btn-predict {
+            background: linear-gradient(135deg, #4f6ef7, #7a4cf0);
+            border: none;
+            color: white;
+            box-shadow: 0 4px 20px #3f5fef40;
+        }
+
+        .predictor-actions .btn-predict i {
+            color: white;
+        }
+
+        /* history panel */
+        .history-panel {
+            background: #0b1122;
+            border-radius: 28px;
+            padding: 1.2rem 0.8rem 0.6rem;
+            border: 1px solid #293456;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            color: #7f8db0;
+            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            padding: 0 0.5rem 0.7rem;
+            border-bottom: 1px solid #1e2942;
+        }
+
+        .history-list {
+            list-style: none;
+            margin-top: 0.2rem;
+            max-height: 200px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #2b3a5a #0b1122;
+            padding-right: 4px;
+        }
+
+        .history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-track {
+            background: #0b1122;
+            border-radius: 12px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: #2b3a5a;
+            border-radius: 12px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem 0;
+            background: #131b32;
+            border-radius: 40px;
+            border-left: 3px solid transparent;
+            color: #c8d6f0;
+            font-weight: 450;
+            font-size: 0.85rem;
+            transition: 0.1s;
+        }
+
+        .history-item .h-period {
+            background: #1f2a44;
+            padding: 0.1rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #9dafe0;
+        }
+
+        .history-item .h-result {
+            font-weight: 600;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+        }
+
+        .h-result.big {
+            background: #3f1f2f;
+            color: #ff8a8a;
+            border: 1px solid #ff5e5e40;
+        }
+
+        .h-result.small {
+            background: #1a3a2a;
+            color: #6fda9a;
+            border: 1px solid #33d67a40;
+        }
+
+        .history-item .h-time {
+            font-size: 0.6rem;
+            color: #6f7fa0;
+            background: #0b111f;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+        }
+
+        .empty-history {
+            color: #465172;
+            text-align: center;
+            padding: 1.2rem 0;
+            font-weight: 300;
+            font-size: 0.9rem;
+        }
+
+        /* animation bar */
+        .animation-bar {
+            margin: 1rem 0 0.2rem;
+            height: 3px;
+            background: #1e2842;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .animation-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4a6cf7, #b47aff, #4a6cf7);
+            background-size: 200% 100%;
+            border-radius: 12px;
+            transition: width 0.25s ease;
+            animation: shimmer 2s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .predictor-card { padding: 1.5rem; }
+            .result-text { font-size: 2.4rem; }
+            .period-row { flex-wrap: wrap; gap: 6px; }
+            .predictor-actions button { font-size: 0.75rem; padding: 0.6rem 0.3rem; }
+            .history-item { flex-wrap: wrap; gap: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="predictor-card">
+
+    <!-- header -->
+    <div class="predictor-header">
+        <h2><i class="fas fa-chart-simple"></i> BIG · SMALL</h2>
+        <span class="live-badge"><span class="live-dot"></span> PREDICTOR</span>
+    </div>
+
+    <!-- period -->
+    <div class="period-row">
+        <span class="period-label"><i class="far fa-calendar-alt" style="margin-right: 6px;"></i> PERIOD</span>
+        <span class="period-number" id="periodDisplay">#1428</span>
+    </div>
+
+    <!-- result -->
+    <div class="result-hero">
+        <div class="result-box">
+            <div class="result-text" id="resultDisplay">BIG</div>
+        </div>
+    </div>
+
+    <!-- actions -->
+    <div class="predictor-actions">
+        <button class="btn-predict" id="predictBtn"><i class="fas fa-wand-magic-sparkles"></i> PREDICT</button>
+        <button id="resetBtn"><i class="fas fa-rotate-right"></i> RESET</button>
+        <button id="autoBtn"><i class="fas fa-infinity"></i> AUTO</button>
+    </div>
+
+    <!-- history -->
+    <div class="history-panel">
+        <div class="history-header">
+            <span><i class="fas fa-clock-rotate-left" style="margin-right: 6px;"></i> RECENT</span>
+            <span id="historyCount">0 / 5</span>
+        </div>
+        <ul class="history-list" id="historyList">
+            <!-- dynamic -->
+        </ul>
+        <div class="animation-bar">
+            <div class="animation-fill" id="animationFill"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ---------- STATE ----------
+        let history = [];            // { period, result, time }
+        const MAX_HISTORY = 5;
+        let periodCounter = 1428;
+        let autoInterval = null;
+        let isAutoRunning = false;
+
+        // DOM refs
+        const periodDisplay = document.getElementById('periodDisplay');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const historyList = document.getElementById('historyList');
+        const historyCount = document.getElementById('historyCount');
+        const animationFill = document.getElementById('animationFill');
+        const predictBtn = document.getElementById('predictBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const autoBtn = document.getElementById('autoBtn');
+
+        // helper
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+
+        // generate random BIG/SMALL (50/50)
+        function generateResult() {
+            return Math.random() < 0.5 ? 'BIG' : 'SMALL';
+        }
+
+        // render history list
+        function renderHistory() {
+            historyList.innerHTML = '';
+            if (history.length === 0) {
+                const empty = document.createElement('li');
+                empty.className = 'empty-history';
+                empty.innerHTML = '<i class="fas fa-chart-simple" style="opacity:0.3; margin-right:6px;"></i> no predictions yet';
+                historyList.appendChild(empty);
+                historyCount.textContent = '0 / 5';
+                return;
+            }
+
+            // show latest first (newest on top)
+            const reversed = [...history].reverse();
+            for (const entry of reversed) {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+
+                const periodSpan = document.createElement('span');
+                periodSpan.className = 'h-period';
+                periodSpan.textContent = `#${entry.period}`;
+
+                const resultSpan = document.createElement('span');
+                resultSpan.className = `h-result ${entry.result.toLowerCase()}`;
+                resultSpan.textContent = entry.result;
+
+                const timeSpan = document.createElement('span');
+                timeSpan.className = 'h-time';
+                timeSpan.textContent = entry.time;
+
+                li.appendChild(periodSpan);
+                li.appendChild(resultSpan);
+                li.appendChild(timeSpan);
+                historyList.appendChild(li);
+            }
+            historyCount.textContent = `${history.length} / 5`;
+        }
+
+        // add prediction to history (auto-remove oldest)
+        function addHistory(period, result, time) {
+            history.push({ period, result, time });
+            while (history.length > MAX_HISTORY) {
+                history.shift();
+            }
+            renderHistory();
+        }
+
+        // update UI: period, result, history, animation
+        function updatePrediction(period, result, time) {
+            // update period
+            periodDisplay.textContent = `#${period}`;
+            // update result text with class
+            resultDisplay.textContent = result;
+            resultDisplay.classList.remove('big', 'small');
+            if (result === 'BIG') {
+                resultDisplay.classList.add('big');
+            } else {
+                resultDisplay.classList.add('small');
+            }
+            // add to history
+            addHistory(period, result, time);
+            // animation bar
+            animationFill.style.width = '100%';
+            setTimeout(() => {
+                animationFill.style.width = '0%';
+            }, 280);
+        }
+
+        // generate new prediction (increment period)
+        function generateNewPrediction() {
+            periodCounter += 1;
+            const newResult = generateResult();
+            const newTime = getCurrentTime();
+            updatePrediction(periodCounter, newResult, newTime);
+        }
+
+        // reset predictor (clear history, reset period, set random result)
+        function resetPredictor() {
+            // stop auto if running
+            if (isAutoRunning) {
+                clearInterval(autoInterval);
+                isAutoRunning = false;
+                autoBtn.innerHTML = '<i class="fas fa-infinity"></i> AUTO';
+                autoBtn.style.background = '#19233f';
+                autoBtn.style.color = '#b7cbff';
+            }
+            // reset period to a base
+            periodCounter = 1428;
+            // clear history
+            history = [];
+            // generate a fresh result
+            const freshResult = generateResult();
+            const freshTime = getCurrentTime();
+            // update display (no history push)
+            periodDisplay.textContent = `#${periodCounter}`;
+            resultDisplay.textContent = freshResult;
+            resultDisplay.classList.remove('big', 'small');
+            if (freshResult === 'BIG') {
+                resultDisplay.classList.add('big');
+            } else {
+                resultDisplay.classList.add('small');
+            }
+            // we push this as first history entry
+            addHistory(periodCounter, freshResult, freshTime);
+            // animation
+            animationFill.style.width = '100%';
+            setTimeout(() => { animationFill.style.width = '0%'; }, 280);
+            renderHistory();
+        }
+
+        // toggle auto mode
+        function toggleAuto() {
+            if (isAutoRunning) {
+                // stop
+                clearInterval(autoInterval);
+                isAutoRunning = false;
+                autoBtn.innerHTML = '<i class="fas fa-infinity"></i> AUTO';
+                autoBtn.style.background = '#19233f';
+                autoBtn.style.color = '#b7cbff';
+            } else {
+                // start
+                isAutoRunning = true;
+                autoBtn.innerHTML = '<i class="fas fa-pause"></i> PAUSE';
+                autoBtn.style.background = '#2d3a5e';
+                autoBtn.style.color = '#ffffff';
+                // generate immediately
+                generateNewPrediction();
+                // then every 1.5s
+                autoInterval = setInterval(() => {
+                    generateNewPrediction();
+                }, 1500);
+            }
+        }
+
+        // ---------- INIT ----------
+        function init() {
+            // seed with 5 random results
+            const basePeriod = 1423;
+            const seedResults = ['BIG', 'SMALL', 'BIG', 'SMALL', 'BIG'];
+            const seedTimes = ['12:22:10', '12:22:35', '12:23:01', '12:23:28', '12:23:55'];
+            for (let i = 0; i < seedResults.length; i++) {
+                history.push({
+                    period: basePeriod + i,
+                    result: seedResults[i % seedResults.length],
+                    time: seedTimes[i % seedTimes.length]
+                });
+            }
+            periodCounter = basePeriod + seedResults.length - 1;
+            // set last result as current
+            const last = history[history.length - 1];
+            periodDisplay.textContent = `#${periodCounter}`;
+            resultDisplay.textContent = last.result;
+            resultDisplay.classList.remove('big', 'small');
+            if (last.result === 'BIG') {
+                resultDisplay.classList.add('big');
+            } else {
+                resultDisplay.classList.add('small');
+            }
+            renderHistory();
+            animationFill.style.width = '0%';
+        }
+
+        init();
+
+        // ---------- EVENT LISTENERS ----------
+        predictBtn.addEventListener('click', function() {
+            // if auto is running, stop it
+            if (isAutoRunning) {
+                clearInterval(autoInterval);
+                isAutoRunning = false;
+                autoBtn.innerHTML = '<i class="fas fa-infinity"></i> AUTO';
+                autoBtn.style.background = '#19233f';
+                autoBtn.style.color = '#b7cbff';
+            }
+            generateNewPrediction();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            resetPredictor();
+        });
+
+        autoBtn.addEventListener('click', function() {
+            toggleAuto();
+        });
+
+        // keyboard shortcut: spacebar to predict
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (isAutoRunning) {
+                    // if auto running, stop it and predict once? we just predict
+                    clearInterval(autoInterval);
+                    isAutoRunning = false;
+                    autoBtn.innerHTML = '<i class="fas fa-infinity"></i> AUTO';
+                    autoBtn.style.background = '#19233f';
+                    autoBtn.style.color = '#b7cbff';
+                }
+                generateNewPrediction();
+            }
+        });
+
+        console.log('🔥 BIG SMALL PREDICTOR · press SPACE to predict');
+    })();
+</script>
+
+</body>
+</html>
